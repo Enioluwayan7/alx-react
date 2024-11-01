@@ -7,3 +7,8 @@ export function getFullYear() {
 export function getFooterCopy(isIndex) {
   return isIndex ? 'Holberton School' : 'Holberton School main dashboard';
 }
+
+// Function that returns the followin strings: <strong>Urgent requirement</strong> - complete by EOD.
+export function getLatestNotification() {
+	return "<strong>Urgent requirement</strong> - complete by EOD";
+}
