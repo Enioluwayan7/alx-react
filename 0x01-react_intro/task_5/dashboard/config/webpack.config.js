@@ -1,20 +1,27 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === 'production';
+  const isDevelopment = argv.mode === 'development';
 
   return {
-    entry: './src/index.js',
+    entry: './src/index.js', // Adjust this entry point if needed
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      clean: true, // Cleans up the dist folder before each build
+      clean: true,
     },
-    devtool: isProduction ? 'source-map' : 'inline-source-map',
+    mode: isDevelopment ? 'development' : 'production',
+    devtool: isDevelopment ? 'inline-source-map' : 'source-map',
     module: {
       rules: [
+        {
+          test: /\.js$|\.jsx$/, // Support both .js and .jsx files
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
         {
           test: /\.css$/i,
           use: ['style-loader', 'css-loader'],
@@ -25,18 +32,18 @@ module.exports = (env, argv) => {
         },
       ],
     },
+    resolve: {
+      extensions: ['.js', '.jsx'], // Resolve imports for .js and .jsx
+    },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './dist/index.html',
+        template: './dist/index.html', // Adjust path if necessary
       }),
-      // Enables hot module replacement in development
-      !isProduction && new webpack.HotModuleReplacementPlugin(),
-    ].filter(Boolean),
+    ],
     devServer: {
       static: path.resolve(__dirname, 'dist'),
       hot: true,
-      open: true,
     },
-    mode: isProduction ? 'production' : 'development',
   };
 };
+
