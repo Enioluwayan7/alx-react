@@ -1,15 +1,7 @@
-export default function accessImmutableObject(object, array) {
-    return array.reduce((acc, key) => acc && acc[key], object);
-}
+import { fromJS } from 'immutable';
 
-// Example usage:
-const result = accessImmutableObject(
-    {
-        name: {
-            first: "Guillaume",
-            last: "Salva"
-        }
-    },
-    ['name', 'first']
-);
-console.log(result); // Output: Guillaume
+export default function accessImmutableObject(object, array) {
+	  const mappedObj = fromJS(object);
+
+	  return mappedObj.getIn(array, undefined);
+}
